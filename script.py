@@ -9,10 +9,14 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("input",type=str,help="image file")
     parser.add_argument("-o","--output",type=str,help="specify output directory")
+    parser.add_argument("-n","--name",type=str,help="name of output file (default name is 'output.html')")
+    parser.add_argument("-t","--type",type=str,choices=["code","website"],help="'website' puts out the file with head and body tags while 'code' only saves the table part in a file")
+    #parser.add_argument("--ratio",type=str,choices=["fixed","window"],help="'fixed' forces original aspect ratio while 'window' is affected by the window aspect ratio")
+    parser.add_argument("-b","--border",action='store_true',help="turns on border")
+    parser.add_argument("--nocollapse",action='store_true',help="disables border collapse")
     parser.add_argument("--overwrite",action='store_true',help="can replace existing output file")
-    parser.add_argument("--name",type=str,help="name of output file (default name is 'output.html')")
-    parser.add_argument("--type",type=str,choices=["code","website"],help="'website' puts out the file with head and body tags while 'code' only saves the table part in a file")
-    parser.add_argument("--ratio",type=str,choices=["fixed","window"],help="'fixed' forces original aspect ratio while 'window' is affected by the window aspect ratio")
+    parser.add_argument("-r","--resize",type=int,help="resizes image. value is new width in pixel. --> changes amounnt of pixels")
+    parser.add_argument("-s","--size",type=int,help="width of the resulting table in pixel --> changes size of table")
 
     args = parser.parse_args()
 
@@ -23,6 +27,11 @@ def main():
     out_name = args.name if not args.name == None else "output.html"
     is_full_html = True if args.type == "code" else False
     out_file = os.path.join(out_path,out_name)
+
+    new_width = args.resize if not args.resize == None else -1 
+
+    style_border = "border: 1px solid black;" if args.border else ""
+    style_collapse = "border-collapse: none;" if args.nocollapse else "border-collapse: collapse;"
 
     im = Image.open(in_file)
 
@@ -38,7 +47,15 @@ def main():
     if is_full_html:
         f.write("<head></head><body>")     
 
-    f.write('<table style="border-collapse:collapse;width:'+str(im.size[0])+'px;height:'+str(im.size[1])+'px;">')
+    style = style_border+style_collapse
+
+    # if args.ratio == "fixed" or args.ratio == None:
+    #     f.write('<table style="'+style+'width:'+str(im.size[0])+'px;height:'+str(im.size[1])+'px;">')
+    # else:
+    #     f.write('<table style="'+style+'">')
+    
+    f.write('<table style="'+style+'width:'+str(im.size[0])+'px;height:'+str(im.size[1])+'px;">')
+
     px = im.load()
     hheight = "%.3f" % ((1/im.size[1])*100)
     wwidth = "%.3f" % ((1/im.size[0])*100)
