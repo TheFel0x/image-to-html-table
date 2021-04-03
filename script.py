@@ -1,19 +1,30 @@
 import os
 from PIL import Image
 
-f = open("output.html","w")
-f.write("<head></head><body>")
+wd = os.path.realpath(__file__)[0:len(os.path.realpath(__file__))-9]
 
-if os.path.isfile("pic.png"):
-    pic = "pic.png"
-elif os.path.isfile("pic.jpg"):
-    pic = "pic.jpg"
-elif os.path.isfile("pic.jpeg"):
-    pic = "pic.jpeg"
+pic = None
+
+def registerManually():
+    global pic
+    print("No image found in default image location. Please input image path:")
+    pic = input()
+
+if os.path.exists(os.path.join(wd,"image")):
+    if len(os.listdir(os.path.join(wd,"image"))) > 0:
+        if len(os.listdir(os.path.join(wd,"image"))) > 1:
+            print("Warning! More than 1 Image detected. The program will work with the follwoing image:")
+            print(os.listdir(os.path.join(wd,"image"))[0])
+        pic = os.path.join(os.path.join("image",os.listdir(os.path.join(wd,"image"))[0]))
+    else:
+        registerManually()
 else:
-    pic = ""        
+    registerManually()
 
-if len(pic)>0:
+f = open("output.html","w")
+f.write("<head></head><body>")     
+
+if os.path.isfile(pic):
     im = Image.open(pic)
     f.write('<table style="border-collapse:collapse;width:'+str(im.size[0])+'px;height:'+str(im.size[1])+'px;">')
     px = im.load()
