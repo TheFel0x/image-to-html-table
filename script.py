@@ -11,8 +11,6 @@ def main():
     parser.add_argument("-o","--output",type=str,help="specify output directory")
     parser.add_argument("-n","--name",type=str,help="name of output file (default name is 'output.html')")
     parser.add_argument("-t","--type",type=str,choices=["code","website"],help="'website' puts out the file with head and body tags while 'code' only saves the table part in a file")
-    #parser.add_argument("--ratio",type=str,choices=["fixed","window"],help="'fixed' forces original aspect ratio while 'window' is affected by the window aspect ratio")
-    # ^ might remove this
     parser.add_argument("-b","--border",action='store_true',help="turns on border")
     parser.add_argument("--nocollapse",action='store_true',help="disables border collapse")
     parser.add_argument("--overwrite",action='store_true',help="can replace existing output file")
@@ -27,19 +25,16 @@ def main():
     do_overwrite = args.overwrite
     out_name = args.name if not args.name == None else "output.html"
     is_full_html = True if args.type == "code" else False
-    out_file = os.path.join(out_path,out_name)
-
-    new_pic_width = args.resize if not args.resize == None else -1 
+    out_file = os.path.join(out_path,out_name) 
 
     style_border = "border: 1px solid black;" if args.border else ""
     style_collapse = "border-collapse: none;" if args.nocollapse else "border-collapse: collapse;"
 
     im = Image.open(in_file)
 
-    # todo:
-    #   resize pic if necessary ( new_pic_width )
-
-    # table building
+    if not args.resize == None:
+        size = (args.resize,args.resize*im.height//im.width)
+        im = im.resize(size)
 
     if do_overwrite and os.path.isfile(out_file):
         os.remove(out_file)

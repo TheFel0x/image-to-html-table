@@ -8,11 +8,10 @@ Basically [this](https://gist.github.com/TheFel0x/1623c8b0f56fbde4dd6152f41fc41b
 
 ## todo:
 * args
-  * border style
-  * size
-  * table scaling
+  * ~~border style~~
+  * ~~size~~
   * ~~export location~~
   * ~~export method~~
   * ~~source file~~
-  * image scaling / pixelization
+  * ~~image scaling / pixelization~~
   * nicer README.md with args listed
