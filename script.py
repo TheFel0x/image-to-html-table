@@ -1,11 +1,8 @@
-import os, argparse
+import os, argparse, sys
 from PIL import Image
 
 def main():
-
-    # args stuff
-    global args
-
+ 
     parser = argparse.ArgumentParser()
     parser.add_argument("input",type=str,help="image file")
     parser.add_argument("-o","--output",type=str,help="specify output directory")
@@ -13,7 +10,7 @@ def main():
     parser.add_argument("-t","--type",type=str,choices=["code","website"],help="'website' puts out the file with head and body tags while 'code' only saves the table part in a file")
     parser.add_argument("-b","--border",action='store_true',help="turns on border")
     parser.add_argument("--nocollapse",action='store_true',help="disables border collapse")
-    parser.add_argument("--overwrite",action='store_true',help="can replace existing output file")
+    parser.add_argument("-v","--overwrite",action='store_true',help="can replace existing output file")
     parser.add_argument("-r","--resize",type=int,help="resizes image. value is new width in pixel. --> changes amounnt of pixels")
     parser.add_argument("-s","--size",type=int,help="width of the resulting table in pixel --> changes size of table")
 
@@ -36,18 +33,16 @@ def main():
         size = (args.resize,args.resize*im.height//im.width)
         im = im.resize(size)
 
-    if do_overwrite and os.path.isfile(out_file):
-        os.remove(out_file)
+    if not do_overwrite and os.path.isfile(out_file):
+        print("File exists. Terminating script. Add '--overwrite' / '-v' or change the outputs name with '--name' / '-n'")
+        sys.exit()
 
     f = open(out_file,"w")
     
-    # build file
-
     if is_full_html:
         f.write("<head></head><body>")     
 
     style = style_border+style_collapse
-
 
     table_width = im.size[0] if args.size == None else args.size
     table_height = im.size[1] if args.size == None else im.size[1]*args.size//im.size[0]
@@ -68,7 +63,8 @@ def main():
     if is_full_html:
         f.write("</body>")
     f.close()
-    print("Done.")
+    
+    print("Done. ("+out_file+")")
 
 if __name__ == "__main__":
     main()
