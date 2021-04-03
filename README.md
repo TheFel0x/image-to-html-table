@@ -11,7 +11,7 @@ Basically [this](https://gist.github.com/TheFel0x/1623c8b0f56fbde4dd6152f41fc41b
   * border style
   * size
   * table scaling
-  * export location
-  * export method
-  * source file
+  * ~~export location~~
+  * ~~export method~~
+  * ~~source file~~
   * image scaling / pixelization
