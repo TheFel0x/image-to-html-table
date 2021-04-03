@@ -15,3 +15,4 @@ Basically [this](https://gist.github.com/TheFel0x/1623c8b0f56fbde4dd6152f41fc41b
   * ~~export method~~
   * ~~source file~~
   * image scaling / pixelization
+  * nicer README.md with args listed
