@@ -10,42 +10,21 @@ def main():
     parser.add_argument("input",type=str,help="image file")
     parser.add_argument("-o","--output",type=str,help="specify output directory")
     parser.add_argument("--overwrite",action='store_true',help="can replace existing output file")
-    parser.add_argument("--name",type=str,help="name of output file")
+    parser.add_argument("--name",type=str,help="name of output file (default name is 'output.html')")
     parser.add_argument("--type",type=str,choices=["code","website"],help="'website' puts out the file with head and body tags while 'code' only saves the table part in a file")
+    parser.add_argument("--ratio",type=str,choices=["fixed","window"],help="'fixed' forces original aspect ratio while 'window' is affected by the window aspect ratio")
 
     args = parser.parse_args()
 
     in_file = args.input
-    out_path = ""
-    out_name = "output.html"
-
-    if not args.output == None and os.path.isdir(args.output): # chooses working directory when chosen dir doesnt exist. that's not great
-        out_path = args.output
-    else:
-        out_path = os.getcwd()
-
+    
+    out_path = args.output if not args.output == None else os.getcwd()
     do_overwrite = args.overwrite
-
-    if not args.name == None:
-        out_name = args.name
-
-    if args.type == "code":
-        is_full_html = False
-    else:
-        is_full_html = True
-
+    out_name = args.name if not args.name == None else "output.html"
+    is_full_html = True if args.type == "code" else False
     out_file = os.path.join(out_path,out_name)
 
-    # file stuff
-    im = None
-
-    if os.path.exists(in_file):
-        try:
-            im = Image.open(in_file)
-        except:
-            print("Unable to load image file.")
-    else:
-        print("File "+in_file+" not found.")
+    im = Image.open(in_file)
 
     # table building
 
