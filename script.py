@@ -12,6 +12,7 @@ def main():
     parser.add_argument("-n","--name",type=str,help="name of output file (default name is 'output.html')")
     parser.add_argument("-t","--type",type=str,choices=["code","website"],help="'website' puts out the file with head and body tags while 'code' only saves the table part in a file")
     #parser.add_argument("--ratio",type=str,choices=["fixed","window"],help="'fixed' forces original aspect ratio while 'window' is affected by the window aspect ratio")
+    # ^ might remove this
     parser.add_argument("-b","--border",action='store_true',help="turns on border")
     parser.add_argument("--nocollapse",action='store_true',help="disables border collapse")
     parser.add_argument("--overwrite",action='store_true',help="can replace existing output file")
@@ -28,12 +29,15 @@ def main():
     is_full_html = True if args.type == "code" else False
     out_file = os.path.join(out_path,out_name)
 
-    new_width = args.resize if not args.resize == None else -1 
+    new_pic_width = args.resize if not args.resize == None else -1 
 
     style_border = "border: 1px solid black;" if args.border else ""
     style_collapse = "border-collapse: none;" if args.nocollapse else "border-collapse: collapse;"
 
     im = Image.open(in_file)
+
+    # todo:
+    #   resize pic if necessary ( new_pic_width )
 
     # table building
 
@@ -49,21 +53,20 @@ def main():
 
     style = style_border+style_collapse
 
-    # if args.ratio == "fixed" or args.ratio == None:
-    #     f.write('<table style="'+style+'width:'+str(im.size[0])+'px;height:'+str(im.size[1])+'px;">')
-    # else:
-    #     f.write('<table style="'+style+'">')
-    
-    f.write('<table style="'+style+'width:'+str(im.size[0])+'px;height:'+str(im.size[1])+'px;">')
+
+    table_width = im.size[0] if args.size == None else args.size
+    table_height = im.size[1] if args.size == None else im.size[1]*args.size//im.size[0]
+
+    f.write('<table style="'+style+'width:'+str(table_width)+'px;height:'+str(table_height)+'px;">')
 
     px = im.load()
-    hheight = "%.3f" % ((1/im.size[1])*100)
-    wwidth = "%.3f" % ((1/im.size[0])*100)
+    cell_height = "%.3f" % ((1/table_height)*100)
+    cell_width = "%.3f" % ((1/table_width)*100)
         
     for y in range(im.size[1]):
-        f.write('<tr style="border-collapse:collapse;">')
+        f.write('<tr style="'+style+'">')
         for x in range(im.size[0]):
-            f.write('<td style="border-collapse:collapse;width:'+wwidth+'%;height:'+hheight+'%;background-color:rgb'+str(px[x,y])+'"></td>')
+            f.write('<td style="'+style+';width:'+cell_width+'%;height:'+cell_height+'%;background-color:rgb'+str(px[x,y])+'"></td>')
         f.write("</tr>")
     f.write("</table>")
     
