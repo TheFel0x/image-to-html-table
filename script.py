@@ -31,7 +31,8 @@ def main():
     
     print("Overwrite the existing file if necessary? (y/N)")
     inp = input("y/N: ")
-    if inp.str.lower() == "y" or inp.str.lower() == "yes":
+    inp = "n" if inp == None else inp
+    if inp.lower() == "y" or inp.lower() == "yes":
         do_overwrite = True
     else:
         do_overwrite = False
@@ -47,7 +48,8 @@ def main():
 
     print("Do you want the other HTML tags to be automatically added? (Working HTML page) (Y/n)")
     inp = input("Y/n: ")
-    if inp.str.lower() == "n" or inp.str.lower() == "no":
+    inp = "y" if inp == None else inp
+    if inp.lower() == "n" or inp.lower() == "no":
         is_full_html = False
     else:
         is_full_html = True
@@ -59,7 +61,8 @@ def main():
 
     print("Want a border around your table cells (pixels)? (y/N)")
     inp = input("y/N: ")
-    if inp.str.lower() == "y" or inp.str.lower() == "yes":
+    inp = "n" if inp == None else inp
+    if inp.lower() == "y" or inp.lower() == "yes":
         border = True
     else:
         border = False
@@ -68,7 +71,7 @@ def main():
 
     print("Prevent borders (if enabled) from collapsing? (y/N)")
     inp = input("y/N: ")
-    if inp.str.lower() == "y" or inp.str.lower() == "yes":
+    if inp.lower() == "y" or inp.lower() == "yes":
         nocollapse = True
     else:
         nocollapse = False
