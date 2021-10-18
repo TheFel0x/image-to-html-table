@@ -19,16 +19,18 @@ def main():
 
     print("Enter path of the input image.")
     in_file = input("path: ")
-    
     # in_file = args.input
-    print("Where do you want to output the file?\nEnter full directory or leave empty to save in working directory.")
-    inp = input("path: ")
-    if inp == None:
-        out_path = os.getcwd()
-    else:
-        out_path = inp
+
+    # print("Where do you want to output the file?\nEnter full directory or leave empty to save in working directory.")
+    # inp = input("path: ")
+    # if inp == None:
+        # out_path = os.getcwd()
+    # else:
+        # out_path = inp
     # out_path = args.output if not args.output == None else os.getcwd()
-    
+    # FIXME: this doesnt work. remove the line below this one and make code above work
+    out_path = os.getcwd()
+
     print("Overwrite the existing file if necessary? (y/N)")
     inp = input("y/N: ")
     inp = "n" if inp == None else inp
@@ -38,13 +40,15 @@ def main():
         do_overwrite = False
     #do_overwrite = args.overwrite
     
-    print("What name should the output have? (leave blank for \"output.html\")")
-    inp = input("filename: ")
-    if inp == None:
-        out_name =  "output.html"
-    else:
-        out_name = inp
+    # print("What name should the output have? (leave blank for \"output.html\")")
+    # inp = input("filename: ")
+    # if inp == None:
+    #     out_name =  "output.html"
+    # else:
+    #     out_name = inp
     #out_name = args.name if not args.name == None else "output.html"
+    # FIXME: this doesnt work. remove the line below this one and make code above work
+    out_name = "output.html"
 
     print("Do you want the other HTML tags to be automatically added? (Working HTML page) (Y/n)")
     inp = input("Y/n: ")
